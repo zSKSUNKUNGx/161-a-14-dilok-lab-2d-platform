@@ -1,46 +1,43 @@
 using UnityEngine;
 
-public class Character : MonoBehaviour
+public abstract class Character : MonoBehaviour
 {
-
+    //attribute
     private int health;
+    public int Health { get => health; set => health = (value < 0) ? 0 : value; }
 
-    public int Health
-    {
-        get => health;
-        set => health = (value < 0) ? 0 : value;
-    }
     protected Animator anim;
     protected Rigidbody2D rb;
 
-    // initialize
-    public void Intialize(int startHealth)
+
+    public void Initialize(int startHealth)
     {
         Health = startHealth;
-        Debug.Log($"{this.name} is initialed Health : {this.Health}");
+        Debug.Log($"{this.name} initial Health: {this.Health}");
 
-        rb = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
+        rb = GetComponent<Rigidbody2D>();
     }
 
-    //methods
     public void TakeDamage(int damage)
     {
         Health -= damage;
-        Debug.Log($"{this.name} took damage {damage}. Current Health: {Health}");
+        Debug.Log($"{this.name} took {damage} damage!  Current Health: {Health}.");
+
         IsDead();
     }
 
     public bool IsDead()
     {
-        if (health <= 0)
+        if (Health <= 0)
         {
             Destroy(this.gameObject);
-            Debug.Log($"{this.name} is dead and destroyed!");
+            Debug.Log($"{this.name} is dead and destroy.");
             return true;
         }
         else return false;
     }
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
